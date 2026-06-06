@@ -1,0 +1,32 @@
+name: Setup Assignment Folders
+on: workflow_dispatch # Allows you to run this manually with a single click
+
+jobs:
+  create-folders:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Generate Folders and Keep Files
+        run: |
+          for w in {1..4}; do
+            # Create OOPS folder
+            mkdir -p "Week_$w/OOPS"
+            touch "Week_$w/OOPS/.gitkeep"
+            
+            # Create Day folders
+            for d in {1..5}; do
+              mkdir -p "Week_$w/Day_$d"
+              touch "Week_$w/Day_$d/.gitkeep"
+            done
+          done
+
+      - name: Commit and Push Folders
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "Automated setup of all Week, Day, and OOPS folders"
+          git push
+          
